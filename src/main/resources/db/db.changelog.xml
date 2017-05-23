@@ -71,11 +71,13 @@
 
 	<changeSet id="ADD_PAYMENT_COLUMN" author="cherepov">
 		<addColumn tableName="HOTEL">
-			<column name="PAYMENT" type="INT"></column>
+			<column name="PAYMENT" type="INT">
+<!-- 				<constraints nullable="false" /> -->
+			</column>
 		</addColumn>
 		<rollback>
 			<dropColumn tableName="HOTEL" columnName="PAYMENT" />
 		</rollback>
 	</changeSet>
-	
+
 </databaseChangeLog>

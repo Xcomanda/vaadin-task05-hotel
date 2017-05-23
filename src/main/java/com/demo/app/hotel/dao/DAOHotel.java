@@ -9,6 +9,7 @@ import javax.persistence.criteria.Root;
 
 import com.demo.app.hotel.database.DataProvider;
 import com.demo.app.hotel.entities.Hotel;
+import com.demo.app.hotel.entities.Payment;
 
 public class DAOHotel implements DAOInterface<Hotel> {
 
@@ -31,6 +32,9 @@ public class DAOHotel implements DAOInterface<Hotel> {
 		try {
 			em.getTransaction().begin();
 			Hotel h = em.find(Hotel.class, hotel.getId());
+			if (h.getPayment() == null) {
+				h.setPayment(new Payment());
+			}
 			em.getTransaction().commit();
 			return h;
 		} catch (Exception e) {
@@ -74,12 +78,17 @@ public class DAOHotel implements DAOInterface<Hotel> {
 
 	@Override
 	public List<Hotel> getList() {
-			CriteriaBuilder cb = em.getCriteriaBuilder();
-			CriteriaQuery<Hotel> criteria = cb.createQuery(Hotel.class);
-			Root<Hotel> root = criteria.from(Hotel.class);
-			criteria.select(root);
-			List<Hotel> list = em.createQuery(criteria).getResultList();
-			return list;
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Hotel> criteria = cb.createQuery(Hotel.class);
+		Root<Hotel> root = criteria.from(Hotel.class);
+		criteria.select(root);
+		List<Hotel> list = em.createQuery(criteria).getResultList();
+		for (Hotel hotel : list) {
+			if (hotel.getPayment() == null) {
+				hotel.setPayment(new Payment());
+			}
+		}
+		return list;
 	}
 
 }

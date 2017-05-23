@@ -58,10 +58,12 @@ public abstract class AbstractEditHotelForm extends abstractMultiFunctionalForm 
 	protected void bindFields() {
 		binder.forField(name).asRequired("Name is required").bind(Hotel::getName, Hotel::setName);
 		binder.forField(address).asRequired("Address is required").bind(Hotel::getAddress, Hotel::setAddress);
+
 		binder.forField(rating).withConverter(new IntegerRatingToStringConverter())
 				.withValidator(rating -> rating < 6 && rating > 0,
 						"Rating is required and should be a number from 1 to 5")
 				.bind(Hotel::getRating, Hotel::setRating);
+
 		binder.forField(operatesFrom).withConverter(new DateToWorkedDaysConverter())
 				.withValidator(date -> Duration
 						.between(LocalDate.now().atTime(0, 0), operatesFrom.getValue().atTime(0, 0)).toDays() <= 0,
@@ -73,10 +75,10 @@ public abstract class AbstractEditHotelForm extends abstractMultiFunctionalForm 
 				.withValidator(url -> new UrlValidator().isValid(url), "URL is invalid. Try to write entire URL")
 				.bind(Hotel::getUrl, Hotel::setUrl);
 		binder.forField(description).bind(Hotel::getDescription, Hotel::setDescription);
-		binder.forField(paymentField).withValidator(payment -> {
-			return payment.getPayment() == null || payment.getPayment() >= 0 && payment.getPayment() <= 100;
-		}, "Select either Cash on arrival or Credit card and input number from 0 to 100").bind(Hotel::getPayment,
-				Hotel::setPayment);
+		binder.forField(paymentField)
+			.withValidator(payment -> payment.getPaymentValue() != null && payment.getPaymentValue() != -1 || payment.getPaymentValue() == null,
+			"Select either Cash on arrival or Credit card and input percentage from 0 to 100")
+			.bind(Hotel::getPayment, Hotel::setPayment);
 	}
 
 	@Override

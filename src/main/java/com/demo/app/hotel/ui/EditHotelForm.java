@@ -26,10 +26,10 @@ public class EditHotelForm extends AbstractEditHotelForm {
 	protected void save() {
 		binder.validate();
 		if (binder.isValid()) {
-			System.out.println(hotel.getPayment().getPayment());
-			//hotelService.save(hotel);
-			//hotelForm.updateList();
-			//hotelForm.closePopup();
+			hotel.setPayment(paymentField.getValue());
+			hotelService.save(hotel);
+			hotelForm.updateList();
+			hotelForm.closePopup();
 		} else {
 			binder.validate();
 		}

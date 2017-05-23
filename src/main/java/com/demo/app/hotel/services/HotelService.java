@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import com.demo.app.hotel.dao.DAOHotel;
 import com.demo.app.hotel.entities.Hotel;
 import com.demo.app.hotel.entities.HotelCategory;
+import com.demo.app.hotel.entities.Payment;
 
 public class HotelService {
 
@@ -28,7 +29,7 @@ public class HotelService {
 	}
 
 	public synchronized List<Hotel> findAll() {
-		return findAllbyNameAndAddress(null,null);
+		return findAllbyNameAndAddress(null, null);
 	}
 
 	public synchronized List<Hotel> findAllbyNameAndAddress(String name, String address) {
@@ -101,12 +102,19 @@ public class HotelService {
 				h.setRating(1 + rnd.nextInt(5));
 				h.setUrl(split[2]);
 				h.setAddress(split[3]);
-				
+
 				HotelCategory rndCategory = сategories.get(rnd.nextInt(сategories.size()));
 				h.setCategory(categoryService.findById(rndCategory.getId()));
-				
+
 				long daysOld = rnd.nextInt(365 * 30);
 				h.setOperatesDays(daysOld);
+
+				Payment payment = new Payment();
+				int var = rnd.nextInt(2);
+				if (var == 1)
+					payment.setPaymentValue(rnd.nextInt(21) * 5);
+				h.setPayment(payment);
+
 				save(h);
 			}
 		}

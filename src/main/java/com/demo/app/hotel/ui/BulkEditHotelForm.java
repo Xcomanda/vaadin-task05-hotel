@@ -27,7 +27,7 @@ public class BulkEditHotelForm extends AbstractEditHotelForm {
 		super(hotelForm);
 		setWidth("800px");
 		nativeSelectFields = new NativeSelect<AbstractComponent>();
-		
+
 		Map<AbstractComponent, String> Mapfields = new HashMap<>();
 		Mapfields.put(name, "Name");
 		Mapfields.put(address, "Address");
@@ -36,8 +36,9 @@ public class BulkEditHotelForm extends AbstractEditHotelForm {
 		Mapfields.put(hotelCategory, "Category");
 		Mapfields.put(url, "Url");
 		Mapfields.put(description, "Description");
+		Mapfields.put(paymentField, "Payment");
 		paymentField.setVisible(false);
-		
+
 		fields = new ArrayList<>();
 		fields.add(name);
 		fields.add(address);
@@ -46,6 +47,7 @@ public class BulkEditHotelForm extends AbstractEditHotelForm {
 		fields.add(hotelCategory);
 		fields.add(url);
 		fields.add(description);
+		fields.add(paymentField);
 
 		nativeSelectFields.addSelectionListener(e -> {
 			if (currentComponent != null) {
@@ -109,6 +111,8 @@ public class BulkEditHotelForm extends AbstractEditHotelForm {
 			hotels.forEach(hotel -> hotel.setUrl(this.hotel.getUrl()));
 		} else if (currentComponent == description) {
 			hotels.forEach(hotel -> hotel.setDescription(this.hotel.getDescription()));
+		} else if (currentComponent == paymentField) {
+			hotels.forEach(hotel -> hotel.setPayment(paymentField.getValue()));
 		}
 	}
 
